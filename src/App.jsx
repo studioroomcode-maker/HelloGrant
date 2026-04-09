@@ -388,13 +388,17 @@ function GrantCard({g, onClick}) {
   const [h,setH] = useState(false);
   const dl = Math.max(0,Math.ceil((new Date(g.deadline)-new Date())/864e5));
   const urgent = dl <= 10;
-  const stColor = g.status==="접수중"?T.accent:g.status==="마감임박"?T.rose:g.status==="마감"?T.textDim:T.amber;
-  const stBg = g.status==="접수중"?T.accentDim:g.status==="마감임박"?T.roseDim:g.status==="마감"?T.border:T.amberDim;
+  const isDone = g.status==="마감";
+  const stColor = g.status==="접수중"?T.accent:g.status==="마감임박"?T.rose:isDone?T.textDim:T.amber;
+  const stBg = g.status==="접수중"?T.accentDim:g.status==="마감임박"?T.roseDim:isDone?T.border:T.amberDim;
   return (
     <div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{
-      background:h?T.cardHover:T.card, border:`1px solid ${h?T.accent+"50":T.border}`, borderRadius:T.r,
+      background:h?T.cardHover:T.card, border:`1px solid ${h&&!isDone?T.accent+"50":T.border}`, borderRadius:T.r,
       padding:"20px 22px", cursor:"pointer", transition:"all .22s",
-      transform:h?"translateY(-2px)":"none", boxShadow:h?`0 8px 24px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.04)`:`0 1px 3px rgba(0,0,0,.05)`,
+      transform:h&&!isDone?"translateY(-2px)":"none",
+      boxShadow:h&&!isDone?`0 8px 24px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.04)`:`0 1px 3px rgba(0,0,0,.05)`,
+      opacity: isDone ? 0.42 : 1,
+      filter: isDone ? "grayscale(0.6)" : "none",
     }}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:12}}>
         <div style={{flex:1,minWidth:0}}>
@@ -1191,6 +1195,7 @@ export default function App() {
   const [q,setQ]=useState("");
   const [orgFilter,setOrgFilter]=useState("전체");
   const [catFilter,setCatFilter]=useState("전체");
+  const [statusFilter,setStatusFilter]=useState("전체");
 
   const tabs = [
     {k:"home",l:"대시보드",i:"home"},
@@ -1207,12 +1212,28 @@ export default function App() {
     return ["전체",...Array.from(s)];
   },[]);
 
-  const filtered = useMemo(()=>ALL_GRANTS.filter(g=>{
-    if(q && !g.title.includes(q) && !g.cat.includes(q) && !g.org.includes(q)) return false;
-    if(orgFilter!=="전체" && g.org!==orgFilter) return false;
-    if(catFilter!=="전체" && g.cat!==catFilter) return false;
-    return true;
-  }),[q,orgFilter,catFilter]);
+  const STATUS_FILTERS = [
+    {k:"전체",  l:"전체"},
+    {k:"접수중", l:"접수중"},
+    {k:"마감임박",l:"마감임박"},
+    {k:"마감제외",l:"마감 제외"},
+  ];
+
+  const filtered = useMemo(()=>{
+    let list = ALL_GRANTS.filter(g=>{
+      if(q && !g.title.includes(q) && !g.cat.includes(q) && !g.org.includes(q)) return false;
+      if(orgFilter!=="전체" && g.org!==orgFilter) return false;
+      if(catFilter!=="전체" && g.cat!==catFilter) return false;
+      if(statusFilter==="접수중" && g.status!=="접수중") return false;
+      if(statusFilter==="마감임박" && g.status!=="마감임박") return false;
+      if(statusFilter==="마감제외" && g.status==="마감") return false;
+      return true;
+    });
+    // 마감임박순 정렬은 마감임박 필터 선택 시 D-day 오름차순
+    if(statusFilter==="마감임박") list = [...list].sort((a,b)=>new Date(a.deadline)-new Date(b.deadline));
+    else list = [...list].sort((a,b)=>b.match-a.match);
+    return list;
+  },[q,orgFilter,catFilter,statusFilter]);
 
   const onGen = (g)=>{setSelGrant(null);setWrGrant(g);setTab("writer");};
 
@@ -1312,6 +1333,26 @@ export default function App() {
               </h2>
               <span style={{fontSize:12,color:T.textDim,fontFamily:T.mono}}>{filtered.length}건</span>
             </div>
+            {/* 상태 필터 */}
+            <div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}}>
+              {STATUS_FILTERS.map(f=>{
+                const active = statusFilter===f.k;
+                const dotColor = f.k==="접수중"?T.accent:f.k==="마감임박"?T.rose:f.k==="마감제외"?T.blue:T.textSec;
+                return (
+                  <button key={f.k} onClick={()=>setStatusFilter(f.k)} style={{
+                    display:"flex",alignItems:"center",gap:5,
+                    padding:"5px 12px",borderRadius:20,cursor:"pointer",fontFamily:T.font,
+                    fontSize:12,fontWeight:active?700:500,transition:"all .18s",
+                    border:`1.5px solid ${active?dotColor:T.border}`,
+                    background:active?`${dotColor}18`:"transparent",
+                    color:active?dotColor:T.textDim,
+                  }}>
+                    {f.k!=="전체"&&<span style={{width:6,height:6,borderRadius:"50%",background:active?dotColor:T.textDim,flexShrink:0,display:"inline-block"}}/>}
+                    {f.l}
+                  </button>
+                );
+              })}
+            </div>
             {/* Org Filters */}
             <div style={{marginBottom:10}}>
               <div style={{fontSize:11,color:T.textDim,marginBottom:5,fontWeight:600}}>기관</div>
@@ -1341,7 +1382,7 @@ export default function App() {
               </div>
             </div>
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              {filtered.sort((a,b)=>b.match-a.match).map((g,i)=>(
+              {filtered.map((g,i)=>(
                 <div key={g.id} className={`fu s${Math.min(i+1,5)}`}>
                   <GrantCard g={g} onClick={()=>setSelGrant(g)}/>
                 </div>
