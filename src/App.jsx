@@ -834,6 +834,175 @@ function Stats() {
   );
 }
 
+// ─── Grant Calendar ───
+function GrantCalendar({onGrantClick}) {
+  const today = new Date();
+  const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+
+  const MONTHS = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+  const DOWS = ["일","월","화","수","목","금","토"];
+
+  const grantEvents = useMemo(() => ALL_GRANTS.map(g => {
+    const m = g.period?.match(/(\d{4}-\d{2}-\d{2})\s*~\s*(\d{4}-\d{2}-\d{2})/);
+    const startDate = m ? new Date(m[1]) : new Date(g.deadline);
+    const endDate   = m ? new Date(m[2]) : new Date(g.deadline);
+    const deadlineDate = new Date(g.deadline);
+    const oc = ORG_COLORS[g.org] || {fg:T.accent, bg:T.accentDim};
+    return {...g, startDate, endDate, deadlineDate, color:oc.fg, colorBg:oc.bg};
+  }), []);
+
+  const calDays = useMemo(() => {
+    const firstDow = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrev  = new Date(year, month, 0).getDate();
+    const days = [];
+    for (let i = firstDow - 1; i >= 0; i--)
+      days.push({date: new Date(year, month - 1, daysInPrev - i), curr: false});
+    for (let i = 1; i <= daysInMonth; i++)
+      days.push({date: new Date(year, month, i), curr: true});
+    let nx = 1;
+    while (days.length < 42)
+      days.push({date: new Date(year, month + 1, nx++), curr: false});
+    return days;
+  }, [year, month]);
+
+  const monthGrants = useMemo(() => {
+    const ms = new Date(year, month, 1);
+    const me = new Date(year, month + 1, 0);
+    return grantEvents
+      .filter(g => g.endDate >= ms && g.startDate <= me)
+      .sort((a,b) => a.deadlineDate - b.deadlineDate);
+  }, [grantEvents, year, month]);
+
+  const isSameDay = (a,b) =>
+    a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+
+  const navBtn = {background:T.bg,border:`1px solid ${T.border}`,borderRadius:T.rSm,
+    padding:"5px 9px",cursor:"pointer",color:T.textSec,display:"flex",alignItems:"center"};
+
+  return (
+    <div className="fu">
+      {/* Header */}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}}>
+        <h2 style={{fontSize:18,fontWeight:800,display:"flex",alignItems:"center",gap:8}}>
+          <Ico n="calendar" sz={20} c={T.accent}/> 공고 일정
+        </h2>
+        <div style={{display:"flex",alignItems:"center",gap:6}}>
+          <button onClick={()=>setViewDate(new Date(today.getFullYear(),today.getMonth(),1))}
+            style={{...navBtn,fontSize:11,fontWeight:650,padding:"5px 11px",color:T.textSec}}>오늘</button>
+          <button onClick={()=>setViewDate(new Date(year,month-1,1))} style={navBtn}><Ico n="back" sz={15}/></button>
+          <span style={{fontSize:14,fontWeight:700,minWidth:72,textAlign:"center"}}>
+            {year}년 {MONTHS[month]}
+          </span>
+          <button onClick={()=>setViewDate(new Date(year,month+1,1))} style={navBtn}><Ico n="arrow" sz={15}/></button>
+        </div>
+      </div>
+
+      {/* Calendar grid */}
+      <div style={{background:T.surface,border:`1px solid ${T.border}`,borderRadius:T.r,overflow:"hidden",marginBottom:20}}>
+        {/* Day-of-week header */}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",background:T.bg,borderBottom:`1px solid ${T.border}`}}>
+          {DOWS.map((d,i)=>(
+            <div key={d} style={{textAlign:"center",padding:"8px 2px",fontSize:11,fontWeight:700,
+              color:i===0?T.rose:i===6?T.blue:T.textDim}}>{d}</div>
+          ))}
+        </div>
+        {/* Day cells */}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)"}}>
+          {calDays.map(({date,curr},idx)=>{
+            const isToday = isSameDay(date,today);
+            const dow = date.getDay();
+            const dayGrants = monthGrants.filter(g => date>=g.startDate && date<=g.endDate);
+            return (
+              <div key={idx} style={{
+                minHeight:86,padding:"4px 2px",
+                borderRight: idx%7!==6?`1px solid ${T.border}`:"none",
+                borderBottom: idx<35?`1px solid ${T.border}`:"none",
+                background: isToday?T.accentDim:T.surface,
+                opacity: curr?1:0.38,
+              }}>
+                {/* Day number */}
+                <div style={{
+                  width:22,height:22,borderRadius:"50%",display:"flex",alignItems:"center",
+                  justifyContent:"center",fontSize:11,fontWeight:isToday?800:400,marginBottom:3,
+                  background:isToday?T.accent:"transparent",
+                  color:isToday?T.bg:dow===0?T.rose:dow===6?T.blue:T.text,
+                }}>{date.getDate()}</div>
+                {/* Event bars */}
+                <div style={{display:"flex",flexDirection:"column",gap:2}}>
+                  {dayGrants.slice(0,3).map(g=>{
+                    const dl = isSameDay(date,g.deadlineDate);
+                    const isFirst = isSameDay(date,g.startDate) || dow===0 || date.getDate()===1;
+                    return (
+                      <div key={g.id} onClick={e=>{e.stopPropagation();onGrantClick(g);}}
+                        title={g.title} style={{
+                          height:15,cursor:"pointer",overflow:"hidden",
+                          borderRadius: dl?"3px":"0",
+                          background: dl?g.color:`${g.color}25`,
+                          borderLeft: dl?"none":`2.5px solid ${g.color}`,
+                          display:"flex",alignItems:"center",paddingLeft:3,
+                        }}>
+                        {(isFirst||dl) && (
+                          <span style={{fontSize:8.5,fontWeight:700,
+                            color:dl?"#fff":g.color,
+                            whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:52}}>
+                            {dl?"마감":ORG_COLORS[g.org]?.label||g.org}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                  {dayGrants.length>3&&<div style={{fontSize:8,color:T.textDim,paddingLeft:2}}>+{dayGrants.length-3}</div>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Grant list for the month */}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+        <h3 style={{fontSize:13,fontWeight:700,color:T.text}}>{MONTHS[month]} 공고 목록</h3>
+        <span style={{fontSize:11,color:T.textDim,fontFamily:T.mono}}>{monthGrants.length}건</span>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        {monthGrants.map(g=>{
+          const daysLeft = Math.ceil((g.deadlineDate - today)/(1000*60*60*24));
+          const dc = daysLeft<=0?T.rose:daysLeft<=14?T.amber:T.textSec;
+          return (
+            <div key={g.id} onClick={()=>onGrantClick(g)} style={{
+              display:"flex",alignItems:"center",gap:10,padding:"11px 14px",
+              background:T.surface,border:`1px solid ${T.border}`,
+              borderLeft:`4px solid ${g.color}`,borderRadius:`0 ${T.rSm} ${T.rSm} 0`,
+              cursor:"pointer",transition:"background .15s",
+            }}
+            onMouseEnter={e=>e.currentTarget.style.background=T.surfaceHover}
+            onMouseLeave={e=>e.currentTarget.style.background=T.surface}>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:13,fontWeight:700,color:T.text,overflow:"hidden",
+                  textOverflow:"ellipsis",whiteSpace:"nowrap",marginBottom:2}}>{g.title}</div>
+                <div style={{fontSize:11,color:T.textDim}}>{g.period}</div>
+              </div>
+              <Badge bg={g.colorBg} fg={g.color}>{ORG_COLORS[g.org]?.label||g.org}</Badge>
+              <div style={{textAlign:"right",flexShrink:0,minWidth:52}}>
+                <div style={{fontSize:12,fontWeight:800,fontFamily:T.mono,color:dc}}>
+                  {daysLeft<0?"마감":daysLeft===0?"D-Day":`D-${daysLeft}`}
+                </div>
+                <div style={{fontSize:10,color:T.textDim}}>{g.deadline}</div>
+              </div>
+            </div>
+          );
+        })}
+        {monthGrants.length===0&&(
+          <div style={{textAlign:"center",padding:36,color:T.textDim,fontSize:13}}>이달 공고가 없습니다.</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main App ───
 export default function App() {
   const [tab,setTab]=useState("home");
@@ -847,6 +1016,7 @@ export default function App() {
   const tabs = [
     {k:"home",l:"대시보드",i:"home"},
     {k:"grants",l:"공고 탐색",i:"search"},
+    {k:"schedule",l:"공고 일정",i:"calendar"},
     {k:"writer",l:"AI 작성",i:"ai"},
     {k:"tpl",l:"합격 사례",i:"trophy"},
     {k:"fb",l:"피드백",i:"chart"},
@@ -998,6 +1168,9 @@ export default function App() {
               {filtered.length===0&&<div style={{textAlign:"center",padding:40,color:T.textDim}}>검색 결과가 없습니다.</div>}
             </div>
           </div>}
+
+          {/* ── SCHEDULE ── */}
+          {tab==="schedule"&&<GrantCalendar onGrantClick={g=>setSelGrant(g)}/>}
 
           {/* ── WRITER ── */}
           {tab==="writer"&&(wrGrant?<AIWriter grant={wrGrant} onBack={()=>setWrGrant(null)}/>:
