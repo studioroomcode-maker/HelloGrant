@@ -1,30 +1,30 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 
-// ─── Design System: "Cinematic Noir" ───
+// ─── Design System: "Paper Light" ───
 const T = {
-  bg: "#060810",
-  surface: "#0D1117",
-  surfaceHover: "#131A24",
-  card: "#0F1520",
-  cardHover: "#141C2A",
-  border: "#1B2535",
-  borderActive: "#2A3A52",
-  accent: "#00D4AA",
-  accentDim: "rgba(0,212,170,0.12)",
-  accentGlow: "rgba(0,212,170,0.2)",
-  blue: "#3B82F6",
-  blueDim: "rgba(59,130,246,0.12)",
-  amber: "#F59E0B",
-  amberDim: "rgba(245,158,11,0.12)",
-  rose: "#F43F5E",
-  roseDim: "rgba(244,63,94,0.12)",
-  violet: "#8B5CF6",
-  violetDim: "rgba(139,92,246,0.12)",
-  sky: "#38BDF8",
-  skyDim: "rgba(56,189,248,0.12)",
-  text: "#E8ECF1",
-  textSec: "#8B95A5",
-  textDim: "#556070",
+  bg: "#F4F6F9",
+  surface: "#FFFFFF",
+  surfaceHover: "#F8FAFC",
+  card: "#FFFFFF",
+  cardHover: "#F8FAFC",
+  border: "#E2E8F0",
+  borderActive: "#CBD5E1",
+  accent: "#00956D",
+  accentDim: "rgba(0,149,109,0.09)",
+  accentGlow: "rgba(0,149,109,0.16)",
+  blue: "#2563EB",
+  blueDim: "rgba(37,99,235,0.08)",
+  amber: "#B45309",
+  amberDim: "rgba(180,83,9,0.08)",
+  rose: "#BE123C",
+  roseDim: "rgba(190,18,60,0.08)",
+  violet: "#6D28D9",
+  violetDim: "rgba(109,40,217,0.08)",
+  sky: "#0369A1",
+  skyDim: "rgba(3,105,161,0.08)",
+  text: "#1A2332",
+  textSec: "#475569",
+  textDim: "#94A3B8",
   white: "#FFFFFF",
   font: "'Pretendard Variable', 'Pretendard', system-ui, sans-serif",
   mono: "'JetBrains Mono', 'Fira Code', monospace",
@@ -40,7 +40,7 @@ const ORG_COLORS = {
   문체부: { bg: T.amberDim, fg: T.amber, label: "문체부" },
   경기콘텐츠: { bg: T.skyDim, fg: T.sky, label: "경기콘텐츠" },
   서울산업: { bg: T.roseDim, fg: T.rose, label: "SBA" },
-  부산영상: { bg: T.blueDim, fg: "#60A5FA", label: "부산영상" },
+  부산영상: { bg: T.blueDim, fg: T.blue, label: "부산영상" },
 };
 
 const css = `
@@ -208,7 +208,7 @@ const Badge = ({children, bg, fg, sz="xs"}) => (
 const Btn = ({children, primary, sm, style:s, ...p}) => (
   <button {...p} style={{padding:sm?"7px 14px":"10px 20px",borderRadius:T.rSm,
     border:primary?"none":`1px solid ${T.border}`,cursor:"pointer",fontFamily:T.font,
-    background:primary?`linear-gradient(135deg,${T.accent},#00B894)`:"transparent",
+    background:primary?`linear-gradient(135deg,${T.accent},#059669)`:"transparent",
     color:primary?T.bg:T.textSec,fontSize:sm?12:13,fontWeight:650,
     display:"inline-flex",alignItems:"center",gap:6,transition:"all .2s",whiteSpace:"nowrap",...s}}>{children}</button>
 );
@@ -245,7 +245,7 @@ function GrantCard({g, onClick}) {
     <div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{
       background:h?T.cardHover:T.card, border:`1px solid ${h?T.accent+"50":T.border}`, borderRadius:T.r,
       padding:"20px 22px", cursor:"pointer", transition:"all .22s",
-      transform:h?"translateY(-2px)":"none", boxShadow:h?`0 8px 30px rgba(0,0,0,.35)`:"none",
+      transform:h?"translateY(-2px)":"none", boxShadow:h?`0 8px 24px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.04)`:`0 1px 3px rgba(0,0,0,.05)`,
     }}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:12}}>
         <div style={{flex:1,minWidth:0}}>
@@ -658,7 +658,8 @@ function TplCard({t, onClick}) {
     <div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{
       background:h?T.cardHover:T.card,border:`1px solid ${h?T.accent+"40":T.border}`,borderRadius:T.r,
       padding:"16px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",
-      cursor:"pointer",transition:"all .22s",transform:h?"translateY(-1px)":"none"}}>
+      cursor:"pointer",transition:"all .22s",transform:h?"translateY(-1px)":"none",
+      boxShadow:h?`0 6px 18px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04)`:`0 1px 3px rgba(0,0,0,.05)`}}>
       <div style={{flex:1,minWidth:0}}>
         <div style={{display:"flex",gap:6,marginBottom:6,flexWrap:"wrap"}}>
           <Badge bg={T.accentDim} fg={T.accent}>합격</Badge>
@@ -685,8 +686,9 @@ function Stats() {
   return (
     <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:22}}>
       {items.map((s,i)=>(
-        <div key={i} className={`fu s${i+1}`} style={{background:`linear-gradient(145deg,${T.card},${T.surface})`,
-          border:`1px solid ${T.border}`,borderRadius:T.r,padding:"16px 10px",textAlign:"center"}}>
+        <div key={i} className={`fu s${i+1}`} style={{background:T.card,
+          border:`1px solid ${T.border}`,borderRadius:T.r,padding:"16px 10px",textAlign:"center",
+          boxShadow:`0 1px 4px rgba(0,0,0,.05)`}}>
           <div style={{marginBottom:6,opacity:.8}}><Ico n={s.icon} sz={22} c={s.c}/></div>
           <div style={{fontSize:20,fontWeight:800,fontFamily:T.mono,color:s.c}}>{s.val}</div>
           <div style={{fontSize:11,color:T.textDim,marginTop:2}}>{s.label}</div>
@@ -742,7 +744,7 @@ export default function App() {
         }}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
             <div style={{width:34,height:34,borderRadius:10,
-              background:`linear-gradient(135deg,${T.accent},#00B894)`,
+              background:`linear-gradient(135deg,${T.accent},#059669)`,
               display:"flex",alignItems:"center",justifyContent:"center",
               boxShadow:`0 2px 12px ${T.accentGlow}`}}>
               <Ico n="spark" sz={18} c={T.bg}/>
