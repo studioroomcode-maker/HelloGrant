@@ -742,16 +742,64 @@ function AIWriter({grant, onBack}) {
   ];
   const stepLabels=["기본 정보","프로젝트 개요","예산/일정"];
 
-  const doGen = () => {
+  const doGen = async () => {
+    // ── 세션 캐시 확인 (동일 입력 재요청 방지) ──
+    const cacheKey = `hg_${grant?.id}_${btoa(encodeURIComponent(JSON.stringify(fd))).slice(0,32)}`;
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) { setResult(cached); return; }
+
     setGen(true); setStream("");
     const orgLabel = ORG_COLORS[grant?.org]?.label || grant?.org || "기관";
-    const fullText = `# ${fd.project||"프로젝트명"} — ${orgLabel} 지원서\n\n## 1. 사업 개요\n\n### 1.1 프로젝트 소개\n"${fd.project}"는 ${fd.genre||"영상 콘텐츠"} 장르의 작품으로, ${fd.company||"제작사"}에서 기획·제작합니다. 본 프로젝트는 ${orgLabel} ${grant?.title||"지원사업"}의 취지에 부합하여 대한민국 ${grant?.cat||"영상"} 산업의 글로벌 경쟁력 강화에 기여하고자 합니다.\n\n### 1.2 기획 의도\n${fd.synopsis||"본 작품은 독창적인 스토리텔링과 혁신적인 비주얼로 국내외 관객에게 새로운 경험을 제공하고자 합니다."}\n\n본 프로젝트의 핵심 차별점:\n- 국내 최초 시도되는 독자적 비주얼 스타일과 서사 구조\n- 글로벌 OTT 플랫폼과의 사전 유통 협의 진행\n- 한국적 소재와 보편적 감성의 결합으로 해외 시장 진출 용이\n\n## 2. 제작 역량\n\n### 2.1 제작진\n감독 ${fd.director||"OOO"}은 ${grant?.cat||"영상"} 분야에서 다수의 수상 경력과 상업적 성과를 보유하고 있습니다. ${fd.company||"본 제작사"}는 설립 이후 꾸준히 양질의 콘텐츠를 제작해왔으며, 국내외 유수 영화제·마켓에서 작품성과 사업성을 인정받았습니다.\n\n### 2.2 기술 역량\n- 자체 개발 제작 파이프라인 보유 (Unreal Engine / Blender / Nuke)\n- 클라우드 렌더팜 운영 및 AI 기반 워크플로우 도입\n- 국내외 협력 네트워크를 통한 공동제작 경험\n\n## 3. 시장 분석 및 유통 전략\n\n### 3.1 타겟\n${fd.target||"국내외 다양한 관객"}을 1차 타겟으로 설정하며, 글로벌 OTT 플랫폼을 통한 해외 유통을 계획합니다.\n\n### 3.2 유통 전략\n- 1단계: 국내 극장/OTT 동시 런칭\n- 2단계: 주요 국제 영화제·마켓 출품 (안시, 부산, 칸 등)\n- 3단계: 글로벌 OTT 2차 판권 및 머천다이징\n\n## 4. 제작 계획\n\n### 4.1 일정\n${fd.timeline||"총 18개월 예정"}\n- 프리프로덕션 4개월: 시나리오, 콘셉트, 스토리보드\n- 프로덕션 10개월: 본 제작\n- 포스트프로덕션 4개월: 합성, 사운드, DI, 마스터링\n\n### 4.2 예산\n총 제작비: ${fd.budget||"미정"}\n- 인건비 45% / 기술·장비 25% / 외주·협력 20% / 기타 10%\n\n## 5. 기대 효과\n\n- 국내 ${grant?.cat||"영상"} 산업 인프라 강화 및 기술 축적\n- 신진 인력 양성 및 양질의 일자리 창출 (30명+)\n- 한국 문화의 글로벌 확산과 한류 콘텐츠 다양성 확보\n- ${orgLabel} 지원사업의 성과 가시화 (해외 수상·판매 실적)\n\n---\n※ 본 지원서는 AI 초안이며, 실제 제출 전 전문가 검토 및 기관별 양식 확인을 권장합니다.`;
-    let i=0;
-    ref.current=setInterval(()=>{
-      i+=Math.floor(Math.random()*10)+5;
-      if(i>=fullText.length){i=fullText.length;clearInterval(ref.current);setResult(fullText);setGen(false);}
-      setStream(fullText.substring(0,i));
-    },18);
+
+    // ── 입력된 항목만 포함 (불필요한 토큰 절감) ──
+    const parts = [
+      `공고: ${grant?.title || "지원사업"} (${orgLabel})`,
+      `분야: ${grant?.cat || ""}`,
+      fd.company   && `제작사: ${fd.company}`,
+      fd.director  && `감독: ${fd.director}`,
+      fd.project   && `프로젝트명: ${fd.project}`,
+      fd.genre     && `장르: ${fd.genre}`,
+      fd.synopsis  && `시놉시스: ${fd.synopsis}`,
+      fd.target    && `타겟: ${fd.target}`,
+      fd.budget    && `예산: ${fd.budget}`,
+      fd.timeline  && `일정: ${fd.timeline}`,
+    ].filter(Boolean).join("\n");
+
+    try {
+      const resp = await fetch("http://localhost:3001/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: parts }),
+      });
+
+      if (!resp.ok) throw new Error(`서버 오류 ${resp.status}`);
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let full = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value);
+        for (const line of chunk.split("\n")) {
+          if (!line.startsWith("data: ")) continue;
+          const data = line.slice(6).trim();
+          if (data === "[DONE]") { setResult(full); setGen(false); sessionStorage.setItem(cacheKey, full); break; }
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.error) throw new Error(parsed.error);
+            if (parsed.text) { full += parsed.text; setStream(full); }
+          } catch {}
+        }
+      }
+    } catch (err) {
+      const msg = err.message.includes("fetch")
+        ? "서버에 연결할 수 없습니다. `npm run dev`로 서버가 실행 중인지 확인하세요."
+        : err.message;
+      setStream(`## 오류\n\n${msg}`);
+      setGen(false);
+    }
   };
 
   useEffect(()=>()=>{if(ref.current)clearInterval(ref.current);},[]);
