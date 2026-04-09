@@ -68,65 +68,125 @@ input,textarea,select{font-family:${T.font};}
 
 // ─── Mock Data: All Orgs ───
 const ALL_GRANTS = [
-  { id:1, title:"2026 애니메이션 제작 지원(초기본편)", org:"KOCCA", cat:"애니메이션", budget:"최대 7억원", deadline:"2026-05-20", status:"접수중",
-    desc:"국산 애니메이션(TV시리즈/극장/OTT)의 초기 기획부터 본편 제작까지 전주기 지원. 기획 완성도와 제작역량을 종합 평가합니다.",
+  { id:1, title:"2026 애니메이션 제작 지원(초기본편)", org:"KOCCA", cat:"애니메이션",
+    budget:"최대 7억원", budgetDetail:"초기개발 최대 5천만원 / 본편제작 최대 7억원 (정부지원금 70%, 자부담 30%)",
+    deadline:"2026-05-20", period:"2026-04-07 ~ 2026-05-20 18:00", status:"접수중",
+    url:"https://www.kocca.kr/kocca/biz/bizNotice.do",
+    contact:"한국콘텐츠진흥원 애니메이션산업팀 061-900-6390",
+    eligibility:"국내 법인(애니메이션 제작 경력 3년 이상, 사업자등록 후 1년 이상)",
+    desc:"국산 애니메이션(TV시리즈/극장/OTT)의 초기 기획부터 본편 제작까지 전주기 지원. 총 사업규모 120억원, 15개 내외 선정.",
     reqs:["사업계획서","시나리오(트리트먼트)","제작예산서","감독 포트폴리오","사업자등록증"],
     eval:[{name:"작품성",w:30,d:"시나리오, 캐릭터, 연출 비전"},{name:"제작역량",w:25,d:"감독·PD 경력, 제작사 실적"},{name:"시장성",w:20,d:"타겟, 유통전략, 해외진출"},{name:"기술혁신",w:15,d:"제작 파이프라인, 신기술 활용"},{name:"실현가능성",w:10,d:"예산 적정성, 일정 계획"}],
     match:94 },
-  { id:2, title:"2026 방송영상콘텐츠 제작 지원", org:"KOCCA", cat:"방송영상", budget:"최대 10억원", deadline:"2026-06-10", status:"접수중",
-    desc:"글로벌 OTT 플랫폼 연계 방송영상콘텐츠 제작을 지원합니다.",
-    reqs:["기획안","제작계획서","예산서","유통계획서"],
-    eval:[{name:"기획력",w:30},{name:"제작역량",w:25},{name:"유통전략",w:25},{name:"예산적정성",w:20}],
+  { id:2, title:"2026 방송영상콘텐츠 제작 지원", org:"KOCCA", cat:"방송영상",
+    budget:"최대 10억원", budgetDetail:"편당 최대 10억원 (정부지원 최대 60%, 자부담 40% 이상), 총 8편 내외 선정",
+    deadline:"2026-06-10", period:"2026-04-28 ~ 2026-06-10 18:00", status:"접수중",
+    url:"https://www.kocca.kr/kocca/biz/bizNotice.do",
+    contact:"한국콘텐츠진흥원 방송영상산업팀 061-900-6233",
+    eligibility:"국내 방송영상 제작사 (사업자등록 후 1년 이상, OTT 플랫폼 유통 협의 필수)",
+    desc:"글로벌 OTT 플랫폼 연계 방송영상콘텐츠 제작을 지원합니다. 총 사업규모 80억원, 넷플릭스·왓챠·웨이브 등 국내외 OTT 사전 협의 시 우대.",
+    reqs:["기획안","제작계획서","예산서","유통계획서","OTT 플랫폼 협의 확인서(있는 경우)"],
+    eval:[{name:"기획력",w:30,d:"차별성, 완성도, 기획 배경"},{name:"제작역량",w:25,d:"감독·제작사 실적"},{name:"유통전략",w:25,d:"OTT 연계 실현가능성"},{name:"예산적정성",w:20,d:"항목별 산출근거"}],
     match:87 },
-  { id:3, title:"2026 AI 콘텐츠 제작지원", org:"KOCCA", cat:"AI/기술", budget:"최대 3억원", deadline:"2026-05-30", status:"접수중",
-    desc:"AI 기술을 활용한 혁신 콘텐츠 제작 프로젝트를 지원합니다. 문체부와 공동으로 총 198억원 규모.",
-    reqs:["기술기획서","AI 활용 계획서","프로토타입","사업계획서"],
-    eval:[{name:"기술혁신성",w:35},{name:"콘텐츠 품질",w:25},{name:"사업화 가능성",w:20},{name:"팀 역량",w:20}],
+  { id:3, title:"2026 AI 콘텐츠 제작지원", org:"KOCCA", cat:"AI/기술",
+    budget:"최대 3억원", budgetDetail:"과제당 최대 3억원 (문체부·KOCCA 공동 총 198억원 규모), 20개 과제 내외 선정",
+    deadline:"2026-05-30", period:"2026-04-14 ~ 2026-05-30 17:00", status:"접수중",
+    url:"https://www.kocca.kr/kocca/biz/bizNotice.do",
+    contact:"한국콘텐츠진흥원 기술혁신팀 061-900-6471",
+    eligibility:"AI 기술 보유 콘텐츠 기업 또는 컨소시엄 (기업부설연구소 또는 연구개발 전담부서 보유 우대)",
+    desc:"AI 기술을 활용한 혁신 콘텐츠 제작 프로젝트를 지원합니다. 생성형 AI, 실감콘텐츠 제작 자동화, AI 시나리오 도구 등 포함.",
+    reqs:["기술기획서","AI 활용 계획서","프로토타입(시연 가능 수준)","사업계획서","기업부설연구소 등록증(해당 시)"],
+    eval:[{name:"기술혁신성",w:35,d:"AI 적용 독창성, 기술 완성도"},{name:"콘텐츠 품질",w:25,d:"결과물 활용성"},{name:"사업화 가능성",w:20,d:"시장 수요, 수익모델"},{name:"팀 역량",w:20,d:"개발진 전문성"}],
     match:72 },
-  { id:4, title:"2026 독립·예술영화 제작 지원", org:"KOFIC", cat:"독립영화", budget:"최대 4억원", deadline:"2026-05-25", status:"접수중",
-    desc:"독립·예술영화의 다양성 확보를 위한 제작 지원사업입니다.",
+  { id:4, title:"2026 독립·예술영화 제작 지원", org:"KOFIC", cat:"독립영화",
+    budget:"최대 4억원", budgetDetail:"장편 최대 4억원 / 중편 최대 1억5천만원 (국비 최대 70%), 총 12편 내외 선정",
+    deadline:"2026-05-25", period:"2026-04-21 ~ 2026-05-25 18:00", status:"접수중",
+    url:"https://www.kofic.or.kr/kofic/business/pport/findPortfSuprt.do",
+    contact:"영화진흥위원회 제작지원팀 051-720-4822",
+    eligibility:"독립·예술영화 제작 경력 보유 감독 (데뷔작 포함, 국내 영화제 수상 경력 우대)",
+    desc:"독립·예술영화의 다양성 확보와 신진 감독 육성을 위한 제작 지원. 총 사업규모 48억원, 부산/전주/서울독립영화제 연계 심사.",
     reqs:["시나리오(완본)","감독 연출의도서","제작계획서","예산서","캐스팅 계획"],
-    eval:[{name:"작품성",w:35},{name:"독창성",w:25},{name:"감독역량",w:20},{name:"실현가능성",w:20}],
+    eval:[{name:"작품성",w:35,d:"시나리오 완성도, 연출 비전"},{name:"독창성",w:25,d:"주제, 형식, 표현의 차별성"},{name:"감독역량",w:20,d:"필모그래피, 수상 실적"},{name:"실현가능성",w:20,d:"제작진 구성, 예산 타당성"}],
     match:81 },
-  { id:5, title:"2026 극장용 애니메이션 제작 지원", org:"KOFIC", cat:"애니메이션", budget:"최대 5억원", deadline:"2026-06-01", status:"접수중",
-    desc:"극장 개봉 목적의 장편 애니메이션 제작을 지원합니다.",
-    reqs:["시나리오","제작기획서","예산서","파일럿 영상","감독 포트폴리오"],
-    eval:[{name:"작품성",w:30},{name:"제작역량",w:25},{name:"시장성",w:25},{name:"기술력",w:20}],
+  { id:5, title:"2026 극장용 애니메이션 제작 지원", org:"KOFIC", cat:"애니메이션",
+    budget:"최대 5억원", budgetDetail:"편당 최대 5억원 (국비 60% 이내), 파일럿 영상 보유 시 우대, 총 6편 내외",
+    deadline:"2026-06-01", period:"2026-04-14 ~ 2026-06-01 18:00", status:"접수중",
+    url:"https://www.kofic.or.kr/kofic/business/pport/findPortfSuprt.do",
+    contact:"영화진흥위원회 애니메이션지원팀 051-720-4835",
+    eligibility:"극장 개봉 목적 장편 애니메이션 제작사 (90분 이상, 국내 극장 배급사 협의 필수)",
+    desc:"극장 개봉 목적의 장편 애니메이션 제작을 지원합니다. 안시·부천 등 국제 영화제 피칭 통과작 우선 심사 대상.",
+    reqs:["시나리오","제작기획서","예산서","파일럿 영상(30초~3분)","감독 포트폴리오","배급사 협의 확인서"],
+    eval:[{name:"작품성",w:30,d:"시나리오, 비주얼 컨셉"},{name:"제작역량",w:25,d:"파일럿 완성도, 팀 구성"},{name:"시장성",w:25,d:"타겟, 배급 계획"},{name:"기술력",w:20,d:"파이프라인, 기술 우위"}],
     match:89 },
-  { id:6, title:"2026 단편영화 제작 지원", org:"KOFIC", cat:"단편영화", budget:"최대 5천만원", deadline:"2026-04-30", status:"마감임박",
-    desc:"신진 감독의 단편영화 제작을 지원합니다.",
+  { id:6, title:"2026 단편영화 제작 지원", org:"KOFIC", cat:"단편영화",
+    budget:"최대 5천만원", budgetDetail:"편당 2천만원~5천만원 차등 지원 (국비 100%), 30편 내외 선정",
+    deadline:"2026-04-30", period:"2026-04-01 ~ 2026-04-30 18:00", status:"마감임박",
+    url:"https://www.kofic.or.kr/kofic/business/pport/findPortfSuprt.do",
+    contact:"영화진흥위원회 단편지원팀 051-720-4821",
+    eligibility:"만 39세 이하 신진 감독 (상업 장편 연출 이력 없음, 제작비 자부담 불요)",
+    desc:"신진 감독의 단편영화 제작을 지원합니다. 전주·서울독립·부산 등 국제영화제 출품 의무, 총 사업규모 15억원.",
     reqs:["시나리오","감독 소개서","제작계획서","예산서"],
-    eval:[{name:"작품성",w:35},{name:"독창성",w:25},{name:"실현가능성",w:20},{name:"잠재력",w:20}],
+    eval:[{name:"작품성",w:35,d:"시나리오, 연출 개성"},{name:"독창성",w:25,d:"주제 신선도"},{name:"실현가능성",w:20,d:"예산, 일정"},{name:"잠재력",w:20,d:"감독 성장 가능성"}],
     match:76 },
-  { id:7, title:"2026 만화·웹툰 창작 지원", org:"KOMACON", cat:"만화/웹툰", budget:"최대 3천만원", deadline:"2026-05-15", status:"접수중",
-    desc:"다양성 만화 제작 및 만화 창작 초기 단계를 지원합니다.",
+  { id:7, title:"2026 만화·웹툰 창작 지원", org:"KOMACON", cat:"만화/웹툰",
+    budget:"최대 3천만원", budgetDetail:"작품당 1천만원~3천만원 차등 (창작지원 100% 국비), 50작품 내외 선정",
+    deadline:"2026-05-15", period:"2026-04-08 ~ 2026-05-15 17:00", status:"접수중",
+    url:"https://www.komacon.kr/komacon/business/project/projectView.do",
+    contact:"한국만화영상진흥원 창작지원팀 063-320-0114",
+    eligibility:"국내 거주 만화·웹툰 작가 (데뷔 여부 무관, 팀 창작 가능, 1인 1작품 한정)",
+    desc:"다양성 만화 및 웹툰 창작 초기 단계를 지원합니다. 총 사업규모 15억원, 완성 작품은 KOMACON 플랫폼 연계 유통 지원.",
     reqs:["작품 기획서","원고 샘플(5화 이상)","작가 이력서"],
-    eval:[{name:"작품성",w:40},{name:"독창성",w:30},{name:"완성도",w:30}],
+    eval:[{name:"작품성",w:40,d:"스토리, 그림체 완성도"},{name:"독창성",w:30,d:"주제·캐릭터 차별성"},{name:"완성도",w:30,d:"샘플 원고 품질"}],
     match:68 },
-  { id:8, title:"2026 만화 원작 콘텐츠 제작 지원", org:"KOMACON", cat:"IP 영상화", budget:"최대 2억원", deadline:"2026-06-15", status:"공고예정",
-    desc:"만화·웹툰 IP를 활용한 영상화 프로젝트를 지원합니다.",
-    reqs:["IP 권리 증빙","영상화 기획서","시놉시스","예산서"],
-    eval:[{name:"IP 가치",w:30},{name:"영상화 전략",w:25},{name:"제작역량",w:25},{name:"시장성",w:20}],
+  { id:8, title:"2026 만화 원작 콘텐츠 제작 지원", org:"KOMACON", cat:"IP 영상화",
+    budget:"최대 2억원", budgetDetail:"프로젝트당 최대 2억원 (정부 50%, 민간 50% 매칭), 8개 프로젝트 내외",
+    deadline:"2026-06-15", period:"2026-05-12 ~ 2026-06-15 17:00", status:"공고예정",
+    url:"https://www.komacon.kr/komacon/business/project/projectView.do",
+    contact:"한국만화영상진흥원 영상산업팀 063-320-0127",
+    eligibility:"만화·웹툰 원작 IP 보유자 또는 정당한 계약을 맺은 영상 제작사 (원작자 동의서 필수)",
+    desc:"만화·웹툰 IP를 활용한 애니메이션/드라마 영상화 프로젝트를 지원합니다. 누적 조회수 500만 이상 IP 우대.",
+    reqs:["IP 권리 증빙","영상화 기획서","시놉시스","예산서","원작자 동의서"],
+    eval:[{name:"IP 가치",w:30,d:"조회수, 팬덤, 상업성"},{name:"영상화 전략",w:25,d:"각색 방향성"},{name:"제작역량",w:25,d:"제작사 실적"},{name:"시장성",w:20,d:"유통·해외 계획"}],
     match:83 },
-  { id:9, title:"2026 문화기술 R&D 지원", org:"문체부", cat:"R&D", budget:"과제당 최대 5억원", deadline:"2026-06-20", status:"접수중",
-    desc:"문화체육관광 분야 연구개발 사업입니다. AI, XR, 실감콘텐츠 기술 개발을 지원합니다.",
-    reqs:["연구계획서","기술개발 로드맵","사업화 전략","연구진 구성"],
-    eval:[{name:"기술 우수성",w:30},{name:"사업화 가능성",w:25},{name:"연구역량",w:25},{name:"파급효과",w:20}],
+  { id:9, title:"2026 문화기술 R&D 지원", org:"문체부", cat:"R&D",
+    budget:"과제당 최대 5억원", budgetDetail:"1년차 최대 2억원 / 2년차 최대 3억원 (총 2년 과제, 민간 현금 10% 이상 필수)",
+    deadline:"2026-06-20", period:"2026-04-24 ~ 2026-06-20 18:00", status:"접수중",
+    url:"https://www.mcst.go.kr/kor/s_notice/notice/noticeList.jsp",
+    contact:"문화체육관광부 문화기술과 044-203-2523 / 문화기술 R&D 전담기관 NIPA 02-2131-0400",
+    eligibility:"문화기술 관련 중소기업·스타트업 또는 대학·연구기관 (컨소시엄 권장, 기업부설연구소 필수)",
+    desc:"AI·XR·실감콘텐츠 기술 개발을 지원합니다. 총 사업규모 320억원 (25개 과제), KIST·KAIST 산학 컨소시엄 우대.",
+    reqs:["연구계획서","기술개발 로드맵","사업화 전략","연구진 구성","기업부설연구소 등록증"],
+    eval:[{name:"기술 우수성",w:30,d:"혁신성, 기술 수준"},{name:"사업화 가능성",w:25,d:"시장성, 수익모델"},{name:"연구역량",w:25,d:"연구진 전문성"},{name:"파급효과",w:20,d:"산업·문화적 영향"}],
     match:61 },
-  { id:10, title:"2026 경기도 콘텐츠 기업 성장 지원", org:"경기콘텐츠", cat:"기업성장", budget:"최대 1억원", deadline:"2026-05-10", status:"접수중",
-    desc:"경기도 소재 콘텐츠 기업의 성장을 위한 제작비·마케팅 지원입니다.",
-    reqs:["사업계획서","기업 소개서","재무제표","경기도 소재 증빙"],
-    eval:[{name:"사업성",w:30},{name:"성장가능성",w:25},{name:"고용창출",w:25},{name:"지역기여",w:20}],
+  { id:10, title:"2026 경기도 콘텐츠 기업 성장 지원", org:"경기콘텐츠", cat:"기업성장",
+    budget:"최대 1억원", budgetDetail:"제작지원 최대 7천만원 + 마케팅 최대 3천만원 (경기도 소재 기업 한정), 20개사 선정",
+    deadline:"2026-05-10", period:"2026-04-10 ~ 2026-05-10 17:00", status:"접수중",
+    url:"https://www.gcon.or.kr/main/main.do",
+    contact:"경기콘텐츠진흥원 기업지원팀 031-219-1040",
+    eligibility:"경기도 소재 콘텐츠 기업 (사업자등록증 경기도 주소 필수, 직전년도 매출 100억 미만)",
+    desc:"경기도 소재 콘텐츠 기업의 제작비·마케팅 비용을 지원합니다. 판교 테크노밸리 입주기업 추가 우대, 고용 창출 계획 포함 필수.",
+    reqs:["사업계획서","기업 소개서","재무제표(최근 3년)","경기도 소재 증빙","고용창출 계획서"],
+    eval:[{name:"사업성",w:30,d:"매출 성장성, 비즈니스 모델"},{name:"성장가능성",w:25,d:"중장기 발전 계획"},{name:"고용창출",w:25,d:"신규 고용 규모, 계획"},{name:"지역기여",w:20,d:"경기도 콘텐츠 생태계 기여"}],
     match:70 },
-  { id:11, title:"2026 서울 영상콘텐츠 제작 지원", org:"서울산업", cat:"영상제작", budget:"최대 2억원", deadline:"2026-05-28", status:"접수중",
-    desc:"서울 소재 영상 제작사를 대상으로 한 콘텐츠 제작 지원사업입니다.",
-    reqs:["사업계획서","제작기획서","예산서","서울 소재 증빙"],
-    eval:[{name:"기획력",w:30},{name:"제작역량",w:25},{name:"시장성",w:25},{name:"지역기여",w:20}],
+  { id:11, title:"2026 서울 영상콘텐츠 제작 지원", org:"서울산업", cat:"영상제작",
+    budget:"최대 2억원", budgetDetail:"편당 최대 2억원 (서울시 지원 50% + 자부담 50%), 10개사 내외 선정",
+    deadline:"2026-05-28", period:"2026-04-22 ~ 2026-05-28 18:00", status:"접수중",
+    url:"https://www.sba.seoul.kr/index.do",
+    contact:"서울산업진흥원 콘텐츠산업팀 02-2085-8072",
+    eligibility:"서울 소재 영상 제작사 (사업자등록증 서울 주소, 직전 3년 내 제작 실적 1편 이상)",
+    desc:"서울 소재 영상 제작사를 대상으로 한 콘텐츠 제작 지원사업. 강남·마포·성동구 소재 스튜디오 사용 시 추가 지원.",
+    reqs:["사업계획서","제작기획서","예산서","서울 소재 증빙","최근 제작 실적 증빙"],
+    eval:[{name:"기획력",w:30,d:"아이디어, 차별성"},{name:"제작역량",w:25,d:"이전 제작 실적"},{name:"시장성",w:25,d:"유통 전략, 수익모델"},{name:"지역기여",w:20,d:"서울 영상산업 기여"}],
     match:74 },
-  { id:12, title:"2026 부산 영상산업 제작 인센티브", org:"부산영상", cat:"영상제작", budget:"최대 3억원", deadline:"2026-06-30", status:"공고예정",
-    desc:"부산 지역 촬영·제작 프로젝트에 인센티브를 지원합니다.",
-    reqs:["촬영계획서","부산 로케이션 계획","예산서","제작사 등록증"],
-    eval:[{name:"작품성",w:25},{name:"지역경제 기여",w:30},{name:"제작규모",w:25},{name:"실현가능성",w:20}],
+  { id:12, title:"2026 부산 영상산업 제작 인센티브", org:"부산영상", cat:"영상제작",
+    budget:"최대 3억원", budgetDetail:"부산 로케이션 촬영비의 최대 25% 현금 인센티브 (1억원 미만 지출 시 지원 불가), 연중 상시",
+    deadline:"2026-06-30", period:"2026-01-02 ~ 2026-06-30 (상시 접수)", status:"공고예정",
+    url:"https://www.bfc.or.kr/main",
+    contact:"부산영상위원회 지원팀 051-310-1070",
+    eligibility:"부산 내 20일 이상 촬영 예정인 국내외 영화·드라마·콘텐츠 제작사 (외국 프로덕션 가능)",
+    desc:"부산 지역 촬영·제작 프로젝트에 인센티브를 지원합니다. 해운대·광안리 등 유명 로케이션 무상 섭외 서비스 포함.",
+    reqs:["촬영계획서","부산 로케이션 계획(지도 포함)","예산서","제작사 등록증","촬영 확정 배우·감독 계약서"],
+    eval:[{name:"작품성",w:25,d:"기획 완성도"},{name:"지역경제 기여",w:30,d:"지역 스태프·장비 활용 계획"},{name:"제작규모",w:25,d:"총 제작비, 부산 지출 비중"},{name:"실현가능성",w:20,d:"촬영 일정 확실성"}],
     match:58 },
 ];
 
@@ -192,6 +252,10 @@ const Ico = ({n, sz=18, c}) => {
     arrow:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
     filter:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
     dl:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
+    ext:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+    calendar:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+    person:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+    phone:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.39 2 2 0 0 1 3.06 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16v.92z"/></svg>,
     back:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
     send:<svg style={p} viewBox="0 0 24 24" fill={cl} stroke="none"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>,
     building:<svg style={p} viewBox="0 0 24 24" fill="none" stroke={cl} strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M8 10h.01M16 10h.01M12 10h.01M8 14h.01M16 14h.01M12 14h.01"/></svg>,
@@ -271,52 +335,124 @@ function GrantCard({g, onClick}) {
 // ─── Grant Detail Modal ───
 function GrantModal({g, onClose, onGen}) {
   if(!g) return null;
+  const statusColor = g.status==="접수중" ? {bg:T.accentDim,fg:T.accent}
+    : g.status==="마감임박" ? {bg:T.amberDim,fg:T.amber}
+    : {bg:T.roseDim,fg:T.rose};
   return (
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.75)",backdropFilter:"blur(10px)",
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.72)",backdropFilter:"blur(10px)",
       display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,padding:16}} onClick={onClose}>
       <div onClick={e=>e.stopPropagation()} className="fu" style={{
         background:T.surface,borderRadius:T.rLg,border:`1px solid ${T.border}`,
-        maxWidth:700,width:"100%",maxHeight:"85vh",overflow:"auto",padding:"28px 30px"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-          <div style={{display:"flex",gap:8,alignItems:"center"}}>
+        maxWidth:720,width:"100%",maxHeight:"88vh",overflow:"auto",padding:"26px 28px"}}>
+
+        {/* Header */}
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+          <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
             <OrgBadge org={g.org}/>
-            <Badge bg={g.status==="접수중"?T.accentDim:T.roseDim} fg={g.status==="접수중"?T.accent:T.rose}>{g.status}</Badge>
+            <Badge bg={statusColor.bg} fg={statusColor.fg}>{g.status}</Badge>
+            <Badge bg={T.bg} fg={T.textDim}>{g.cat}</Badge>
           </div>
-          <button onClick={onClose} style={{background:"none",border:"none",cursor:"pointer",color:T.textDim,padding:4}}>
+          <button onClick={onClose} style={{background:"none",border:"none",cursor:"pointer",color:T.textDim,padding:4,flexShrink:0}}>
             <Ico n="close" sz={22}/>
           </button>
         </div>
-        <h2 style={{fontSize:20,fontWeight:800,marginBottom:8,lineHeight:1.4}}>{g.title}</h2>
-        <p style={{color:T.textSec,lineHeight:1.75,marginBottom:22,fontSize:14}}>{g.desc}</p>
 
+        <h2 style={{fontSize:20,fontWeight:800,marginBottom:8,lineHeight:1.4,color:T.text}}>{g.title}</h2>
+        <p style={{color:T.textSec,lineHeight:1.75,marginBottom:18,fontSize:14}}>{g.desc}</p>
+
+        {/* Key info grid */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:18}}>
+          {g.period && (
+            <div style={{padding:"11px 14px",background:T.bg,borderRadius:T.rSm,border:`1px solid ${T.border}`,gridColumn:"1/-1"}}>
+              <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                <Ico n="calendar" sz={12} c={T.textDim}/>
+                <span style={{fontSize:11,color:T.textDim,fontWeight:600,letterSpacing:.5}}>접수 기간</span>
+              </div>
+              <div style={{fontSize:13,fontWeight:700,color:T.text,fontFamily:T.mono}}>{g.period}</div>
+            </div>
+          )}
+          {g.budgetDetail && (
+            <div style={{padding:"11px 14px",background:T.accentDim,borderRadius:T.rSm,border:`1px solid rgba(0,149,109,0.18)`,gridColumn:"1/-1"}}>
+              <div style={{fontSize:11,color:T.accent,fontWeight:600,letterSpacing:.5,marginBottom:3}}>지원 금액</div>
+              <div style={{fontSize:13,fontWeight:700,color:T.accent,lineHeight:1.5}}>{g.budgetDetail}</div>
+            </div>
+          )}
+          {g.eligibility && (
+            <div style={{padding:"11px 14px",background:T.bg,borderRadius:T.rSm,border:`1px solid ${T.border}`,gridColumn:"1/-1"}}>
+              <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                <Ico n="person" sz={12} c={T.textDim}/>
+                <span style={{fontSize:11,color:T.textDim,fontWeight:600,letterSpacing:.5}}>지원 자격</span>
+              </div>
+              <div style={{fontSize:13,color:T.textSec,lineHeight:1.6}}>{g.eligibility}</div>
+            </div>
+          )}
+          {g.contact && (
+            <div style={{padding:"11px 14px",background:T.bg,borderRadius:T.rSm,border:`1px solid ${T.border}`,gridColumn:"1/-1"}}>
+              <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                <Ico n="phone" sz={12} c={T.textDim}/>
+                <span style={{fontSize:11,color:T.textDim,fontWeight:600,letterSpacing:.5}}>문의처</span>
+              </div>
+              <div style={{fontSize:13,color:T.textSec}}>{g.contact}</div>
+            </div>
+          )}
+        </div>
+
+        {/* External links row */}
+        {g.url && (
+          <div style={{display:"flex",gap:8,marginBottom:22,flexWrap:"wrap"}}>
+            <a href={g.url} target="_blank" rel="noopener noreferrer" style={{
+              display:"inline-flex",alignItems:"center",gap:6,padding:"9px 16px",
+              background:T.blue,color:"#fff",borderRadius:T.rSm,fontSize:13,fontWeight:650,
+              textDecoration:"none",flexShrink:0}}>
+              <Ico n="ext" sz={14} c="#fff"/> 공식 사이트
+            </a>
+            <a href={g.url} target="_blank" rel="noopener noreferrer" style={{
+              display:"inline-flex",alignItems:"center",gap:6,padding:"9px 16px",
+              background:T.bg,color:T.textSec,border:`1px solid ${T.border}`,
+              borderRadius:T.rSm,fontSize:13,fontWeight:650,textDecoration:"none",flexShrink:0}}>
+              <Ico n="dl" sz={14} c={T.textSec}/> 모집요강 다운로드
+            </a>
+            <a href={g.url} target="_blank" rel="noopener noreferrer" style={{
+              display:"inline-flex",alignItems:"center",gap:6,padding:"9px 16px",
+              background:T.bg,color:T.textSec,border:`1px solid ${T.border}`,
+              borderRadius:T.rSm,fontSize:13,fontWeight:650,textDecoration:"none",flexShrink:0}}>
+              <Ico n="dl" sz={14} c={T.textSec}/> 지원서 양식 다운로드
+            </a>
+          </div>
+        )}
+
+        {/* Required docs */}
         <div style={{marginBottom:22}}>
-          <h4 style={{fontSize:13,fontWeight:700,color:T.accent,marginBottom:10,textTransform:"uppercase",letterSpacing:1}}>📋 제출 서류</h4>
+          <h4 style={{fontSize:12,fontWeight:700,color:T.accent,marginBottom:10,letterSpacing:1,textTransform:"uppercase"}}>제출 서류</h4>
           <div style={{display:"flex",flexDirection:"column",gap:6}}>
             {g.reqs?.map((r,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"9px 14px",
-                background:T.bg,borderRadius:T.rSm,fontSize:13,border:`1px solid ${T.border}`}}>
+                background:T.bg,borderRadius:T.rSm,fontSize:13,border:`1px solid ${T.border}`,color:T.textSec}}>
                 <Ico n="chk" sz={14} c={T.accent}/> {r}
               </div>
             ))}
           </div>
         </div>
 
-        {g.eval && <div style={{marginBottom:24}}>
-          <h4 style={{fontSize:13,fontWeight:700,color:T.accent,marginBottom:10,textTransform:"uppercase",letterSpacing:1}}>📊 평가 기준</h4>
-          {g.eval.map((e,i)=>(
-            <div key={i} style={{marginBottom:10}}>
-              <div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginBottom:3}}>
-                <span style={{fontWeight:600}}>{e.name}</span>
-                <span style={{color:T.accent,fontFamily:T.mono,fontWeight:700}}>{e.w}%</span>
+        {/* Eval criteria */}
+        {g.eval && (
+          <div style={{marginBottom:24}}>
+            <h4 style={{fontSize:12,fontWeight:700,color:T.accent,marginBottom:10,letterSpacing:1,textTransform:"uppercase"}}>평가 기준</h4>
+            {g.eval.map((e,i)=>(
+              <div key={i} style={{marginBottom:10}}>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginBottom:4}}>
+                  <span style={{fontWeight:650,color:T.text}}>{e.name}</span>
+                  <span style={{color:T.accent,fontFamily:T.mono,fontWeight:700}}>{e.w}%</span>
+                </div>
+                <div style={{height:5,background:T.bg,borderRadius:3,overflow:"hidden",border:`1px solid ${T.border}`}}>
+                  <div style={{width:`${e.w*2.5}%`,height:"100%",borderRadius:3,
+                    background:`linear-gradient(90deg,${T.accent},${T.blue})`,transition:"width .7s ease"}}/>
+                </div>
+                {e.d && <p style={{fontSize:11,color:T.textDim,marginTop:3}}>{e.d}</p>}
               </div>
-              <div style={{height:5,background:T.bg,borderRadius:3,overflow:"hidden"}}>
-                <div style={{width:`${e.w*2.5}%`,height:"100%",borderRadius:3,
-                  background:`linear-gradient(90deg,${T.accent},${T.blue})`,transition:"width .7s ease"}}/>
-              </div>
-              {e.d&&<p style={{fontSize:11,color:T.textDim,marginTop:3}}>{e.d}</p>}
-            </div>
-          ))}
-        </div>}
+            ))}
+          </div>
+        )}
 
         <Btn primary onClick={()=>onGen(g)} style={{width:"100%",justifyContent:"center",padding:14,fontSize:15,borderRadius:T.r,
           boxShadow:`0 4px 20px ${T.accentGlow}`}}>
