@@ -1339,22 +1339,19 @@ export default function App() {
         <TplModal t={selTpl} onClose={()=>setSelTpl(null)}/>
 
         {/* ── Footer ── */}
-        <footer style={{
-          borderTop:`1px solid ${T.border}`,
-          background:T.surface,
-          padding:"20px 24px",
-          display:"flex",
-          alignItems:"center",
-          justifyContent:"space-between",
-          flexWrap:"wrap",
-          gap:12,
-        }}>
-          <img src="/logo-dark.png" alt="Studio Room" style={{height:22,opacity:0.75}}/>
-          <div style={{fontSize:11,color:T.textDim,textAlign:"right",lineHeight:1.6}}>
-            <span style={{fontWeight:600,color:T.textSec}}>Hello Grants</span>
-            {" "}is made by Studio Room
-            <br/>
-            <span style={{letterSpacing:"0.02em"}}>&copy; {new Date().getFullYear()} Studio Room. All rights reserved.</span>
+        <footer style={{borderTop:`1px solid ${T.border}`,background:T.surface}}>
+          <div style={{
+            maxWidth:900, margin:"0 auto", padding:"20px 16px",
+            display:"flex", alignItems:"center", justifyContent:"space-between",
+            flexWrap:"wrap", gap:12,
+          }}>
+            <img src="/logo-dark.png" alt="Studio Room" style={{height:22,opacity:0.75}}/>
+            <div style={{fontSize:11,color:T.textDim,textAlign:"right",lineHeight:1.6}}>
+              <span style={{fontWeight:600,color:T.textSec}}>Hello Grants</span>
+              {" "}is made by Studio Room
+              <br/>
+              <span style={{letterSpacing:"0.02em"}}>&copy; {new Date().getFullYear()} Studio Room. All rights reserved.</span>
+            </div>
           </div>
         </footer>
       </div>
