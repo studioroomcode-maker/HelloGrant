@@ -578,7 +578,7 @@ function TplModal({t, onClose}) {
             t.tips||"",
             ``,
             `═══════════════════════════════════════`,
-            `Hello Grant - 합격 사례 레퍼런스`,
+            `Hello Grants - 합격 사례 레퍼런스`,
             `※ 본 자료는 참고용이며 실제 합격 지원서 원문이 아닙니다.`,
           ];
           const blob = new Blob(["\uFEFF"+lines.join("\n")],{type:"text/plain;charset=utf-8"});
@@ -887,7 +887,7 @@ export default function App() {
             </div>
             <div>
               <h1 style={{fontSize:16,fontWeight:800,letterSpacing:"-0.3px",lineHeight:1.2}}>
-                Hello <span style={{color:T.accent}}>Grant</span>
+                Hello <span style={{color:T.accent}}>Grants</span>
               </h1>
               <p style={{fontSize:10,color:T.textDim}}>영상·애니메이션 지원사업 통합 플랫폼</p>
             </div>
