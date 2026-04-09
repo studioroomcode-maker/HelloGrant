@@ -551,10 +551,10 @@ function GrantModal({g, onClose, onGen}) {
 
 // ─── Template Detail Modal ───
 function TplModal({t, onClose}) {
+  const [sampleTab,setSampleTab] = useState("intent");  // hook must be before any early return
+  const sampleTabs = [{k:"intent",l:"기획의도"},{k:"synopsis",l:"시놉시스"},{k:"capability",l:"제작역량"},{k:"market",l:"시장분석"}];
   if(!t) return null;
   const oc = ORG_COLORS[t.org]||{fg:T.accent,bg:T.accentDim};
-  const [sampleTab,setSampleTab] = React.useState("intent");
-  const sampleTabs = [{k:"intent",l:"기획의도"},{k:"synopsis",l:"시놉시스"},{k:"capability",l:"제작역량"},{k:"market",l:"시장분석"}];
   return (
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.75)",backdropFilter:"blur(10px)",
       display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,padding:16}} onClick={onClose}>
