@@ -1050,29 +1050,31 @@ export default function App() {
         {/* Header */}
         <div style={{
           background:`linear-gradient(180deg,${T.surface} 0%,${T.bg} 100%)`,
-          borderBottom:`1px solid ${T.border}`,padding:"14px 20px",
-          display:"flex",justifyContent:"space-between",alignItems:"center",
+          borderBottom:`1px solid ${T.border}`,
           position:"sticky",top:0,zIndex:100,backdropFilter:"blur(16px)",
         }}>
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:34,height:34,borderRadius:10,
-              background:`linear-gradient(135deg,${T.accent},#059669)`,
-              display:"flex",alignItems:"center",justifyContent:"center",
-              boxShadow:`0 2px 12px ${T.accentGlow}`}}>
-              <Ico n="spark" sz={18} c={T.bg}/>
+          <div style={{maxWidth:900,margin:"0 auto",padding:"14px 16px",
+            display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:34,height:34,borderRadius:10,
+                background:`linear-gradient(135deg,${T.accent},#059669)`,
+                display:"flex",alignItems:"center",justifyContent:"center",
+                boxShadow:`0 2px 12px ${T.accentGlow}`}}>
+                <Ico n="spark" sz={18} c={T.bg}/>
+              </div>
+              <div>
+                <h1 style={{fontSize:16,fontWeight:800,letterSpacing:"-0.3px",lineHeight:1.2}}>
+                  Hello <span style={{color:T.accent}}>Grants</span>
+                </h1>
+                <p style={{fontSize:10,color:T.textDim}}>영상·애니메이션 지원사업 통합 플랫폼</p>
+              </div>
             </div>
-            <div>
-              <h1 style={{fontSize:16,fontWeight:800,letterSpacing:"-0.3px",lineHeight:1.2}}>
-                Hello <span style={{color:T.accent}}>Grants</span>
-              </h1>
-              <p style={{fontSize:10,color:T.textDim}}>영상·애니메이션 지원사업 통합 플랫폼</p>
+            <div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 12px",
+              background:T.bg,borderRadius:20,border:`1px solid ${T.border}`,maxWidth:200}}>
+              <Ico n="search" sz={13} c={T.textDim}/>
+              <input placeholder="검색..." value={q} onChange={e=>{setQ(e.target.value);if(tab!=="grants")setTab("grants");}}
+                style={{background:"none",border:"none",color:T.text,fontSize:12,fontFamily:T.font,outline:"none",width:"100%"}}/>
             </div>
-          </div>
-          <div style={{display:"flex",alignItems:"center",gap:6,padding:"6px 12px",
-            background:T.bg,borderRadius:20,border:`1px solid ${T.border}`,maxWidth:200}}>
-            <Ico n="search" sz={13} c={T.textDim}/>
-            <input placeholder="검색..." value={q} onChange={e=>{setQ(e.target.value);if(tab!=="grants")setTab("grants");}}
-              style={{background:"none",border:"none",color:T.text,fontSize:12,fontFamily:T.font,outline:"none",width:"100%"}}/>
           </div>
         </div>
 
